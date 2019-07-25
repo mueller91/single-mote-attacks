@@ -1,0 +1,44 @@
+language: python
+sudo: required
+
+python:
+  - "2.7"
+  - "3.4"
+  - "3.5"
+
+addons:
+  apt:
+    packages:
+    - build-essential
+    - binutils-msp430
+    - gcc-msp430
+    - msp430-libc
+    - msp430mcu
+    - mspdebug
+    - binutils-avr
+    - gcc-avr
+    - gdb-avr
+    - avr-libc
+    - avrdude
+    - openjdk-7-jdk
+    - openjdk-7-jre
+    - ant
+    - libncurses5-dev
+    - lib32ncurses5
+    - libopenblas-dev
+    - liblapack-dev
+    - gfortran
+    - imagemagick
+    - python-numpy
+    - python-scipy
+
+before_install:
+  - git clone git://github.com/contiki-os/contiki.git ~/contiki
+  - mkdir ~/RPL-Attacks-Data
+  - mkdir ~/Projects
+
+install:
+  - pip install -r requirements.txt
+
+script:
+  - fab test

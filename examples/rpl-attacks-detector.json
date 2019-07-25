@@ -1,0 +1,108 @@
+/*
+
+Available Building Blocks :
+ - version
+ - hello-flood
+ - sinkhole
+
+Available Root mote types :
+ - dummy [default]
+ - echo
+
+Available Sensor mote types :
+ - dummy [default]
+ - echo
+
+Available Malicious mote types :
+ - root
+ - sensor [default]
+
+ */
+
+{
+  /*
+   All simulations will have the same topology with 10 motes of platform Z1, spread in an square of 200m side, with
+    a communication range of 50m
+   */
+  "BASE": {
+    "simulation": {
+      "number-motes": 8,
+      "target": "z1",
+      "duration": 25
+    }
+  },
+  "control-set-clean": {
+    "custom_makefile" : "motes/custom_makefile/Makefile",
+    "additional_files": [
+//      {"src": "motes/project-conf.h", "dst": "motes/project-conf.h"},
+      {"src": "motes/helper/helper_funcs.h", "dst": "motes/helper_funcs.h"},
+      {"src": "motes/helper/helper_funcs.c", "dst": "motes/helper_funcs.c"},
+      {"src": "motes/features/t_f/feature_t_f.h", "dst": "motes/feature_t_f.h"},
+      {"src": "motes/features/t_f/feature_t_f.c", "dst": "motes/feature_t_f.c"},
+      {"src": "motes/features/t_f/rdc_driver.c", "dst": "motes/rdc_driver.c"},
+      {"src": "motes/features/t_f/rdc_driver.h", "dst": "motes/rdc_driver.h"},
+      {"src": "motes/features/dodag_version/dodag_version.h", "dst": "motes/dodag_version.h"},
+      {"src": "motes/features/dodag_version/dodag_version.c", "dst": "motes/dodag_version.c"},
+      {"src": "motes/features/rank_incoming/rank_incoming.h", "dst": "motes/rank_incoming.h"},
+      {"src": "motes/features/rank_incoming/rank_incoming.c", "dst": "motes/rank_incoming.c"},
+      {"src": "motes/features/dao/feature_dao.h", "dst": "motes/feature_dao.h"},
+      {"src": "motes/features/dao/feature_dao.c", "dst": "motes/feature_dao.c"},
+      {"src": "motes/features/dio/feature_dio.h", "dst": "motes/feature_dio.h"},
+      {"src": "motes/features/dio/feature_dio.c", "dst": "motes/feature_dio.c"},
+      {"src": "motes/features/dis/feature_dis.h", "dst": "motes/feature_dis.h"},
+      {"src": "motes/features/dis/feature_dis.c", "dst": "motes/feature_dis.c"}
+    ],
+    "loglevel" : "debug",
+    "simulation": {
+      "title": "Control Set without attack",
+      "goal": "Create a control set without any malicious interference.",
+      "root": "echo",
+      "sensor": "echo"
+    },
+    "num_malicious" : 1,
+    "positions" : {
+      "malicious": {
+        "x" : 5,
+        "y" : 5
+      }
+    }
+  },
+  "detector": {
+    "custom_makefile" : "motes/custom_makefile/Makefile",
+    "additional_files": [
+//      {"src": "motes/project-conf.h", "dst": "motes/project-conf.h"},
+      {"src": "motes/helper/helper_funcs.h", "dst": "motes/helper_funcs.h"},
+      {"src": "motes/helper/helper_funcs.c", "dst": "motes/helper_funcs.c"},
+      {"src": "motes/features/t_f/feature_t_f.h", "dst": "motes/feature_t_f.h"},
+      {"src": "motes/features/t_f/feature_t_f.c", "dst": "motes/feature_t_f.c"},
+      {"src": "motes/features/t_f/rdc_driver.c", "dst": "motes/rdc_driver.c"},
+      {"src": "motes/features/t_f/rdc_driver.h", "dst": "motes/rdc_driver.h"},
+      {"src": "motes/features/dodag_version/dodag_version.h", "dst": "motes/dodag_version.h"},
+      {"src": "motes/features/dodag_version/dodag_version.c", "dst": "motes/dodag_version.c"},
+      {"src": "motes/features/rank_incoming/rank_incoming.h", "dst": "motes/rank_incoming.h"},
+      {"src": "motes/features/rank_incoming/rank_incoming.c", "dst": "motes/rank_incoming.c"},
+      {"src": "motes/features/dao/feature_dao.h", "dst": "motes/feature_dao.h"},
+      {"src": "motes/features/dao/feature_dao.c", "dst": "motes/feature_dao.c"},
+      {"src": "motes/features/dio/feature_dio.h", "dst": "motes/feature_dio.h"},
+      {"src": "motes/features/dio/feature_dio.c", "dst": "motes/feature_dio.c"},
+      {"src": "motes/features/dis/feature_dis.h", "dst": "motes/feature_dis.h"},
+      {"src": "motes/features/dis/feature_dis.c", "dst": "motes/feature_dis.c"}
+    ],
+    "loglevel" : "debug",
+    "simulation": {
+      "title": "Detector Demo",
+      "root": "echo",
+      "sensor": "echo"
+    },
+    "malicious": {
+      "building-blocks": ["blackhole", "dont-forward-uip6"]
+    },
+    "num_malicious" : 1,
+    "positions" : {
+      "malicious": {
+        "x" : 5,
+        "y" : 5
+      }
+    }
+  }
+}

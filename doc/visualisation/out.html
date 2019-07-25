@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="http://cdn.rawgit.com/noelboss/featherlight/1.7.12/release/featherlight.min.css" type="text/css" rel="stylesheet" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="http://cdn.rawgit.com/noelboss/featherlight/1.7.12/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+    <title>RPL Attack Results</title>
+</head>
+<body>
+<!-- HOW TO USE -->
+<!-- Latest compiled and minified CSS -->
+<div class="jumbotron">
+    <div class="container">
+
+        <ul class="nav nav-pills" style="position: fixed; top: 5em; background-color:white; border: 1px solid black;">
+            <li class="active"><a data-toggle="pill" href="#blackhole-attack">Blackhole Attack</a></li>
+            <li><a data-toggle="pill" href="#hello-flood-attack">Hello Flood Attack</a></li>
+            <li><a data-toggle="pill" href="#version-number-attack">Version Number Attack</a></li>
+        </ul>
+        <input type='button' id="switch" value='Switch to C' onclick="switch_to_c();" style='position: fixed; top: 5em; right: 20em;'/>
+        <input type='button' value='1l' onclick="switch_to_dataset('1l');" style='position: fixed; top: 5em; right: 5em;'/>
+	<input type='button' value='2l' onclick="switch_to_dataset('2l');" style='position: fixed; top: 8em; right: 5em;'/>
+	<input type='button' value='3l' onclick="switch_to_dataset('3l');" style='position: fixed; top: 11em; right: 5em;'/>
+	<input type='button' value='4l' onclick="switch_to_dataset('4l');" style='position: fixed; top: 14em; right: 5em;'/>
+	<input type='button' value='5l' onclick="switch_to_dataset('5l');" style='position: fixed; top: 17em; right: 5em;'/>
+	<input type='button' value='6l' onclick="switch_to_dataset('6l');" style='position: fixed; top: 20em; right: 5em;'/>
+	<input type='button' value='7l' onclick="switch_to_dataset('7l');" style='position: fixed; top: 23em; right: 5em;'/>
+	<input type='button' value='8l' onclick="switch_to_dataset('8l');" style='position: fixed; top: 26em; right: 5em;'/>
+	<input type='button' value='9l' onclick="switch_to_dataset('9l');" style='position: fixed; top: 29em; right: 5em;'/>
+	<input type='button' value='10l' onclick="switch_to_dataset('10l');" style='position: fixed; top: 32em; right: 5em;'/>
+	<input type='button' value='11l' onclick="switch_to_dataset('11l');" style='position: fixed; top: 35em; right: 5em;'/>
+	<input type='button' value='12l' onclick="switch_to_dataset('12l');" style='position: fixed; top: 38em; right: 5em;'/>
+	<input type='button' value='13l' onclick="switch_to_dataset('13l');" style='position: fixed; top: 41em; right: 5em;'/>
+	<input type='button' value='14l' onclick="switch_to_dataset('14l');" style='position: fixed; top: 44em; right: 5em;'/>
+	<input type='button' value='15l' onclick="switch_to_dataset('15l');" style='position: fixed; top: 47em; right: 5em;'/>
+	<input type='button' value='16l' onclick="switch_to_dataset('16l');" style='position: fixed; top: 50em; right: 5em;'/>
+	<input type='button' value='17l' onclick="switch_to_dataset('17l');" style='position: fixed; top: 53em; right: 5em;'/>
+	<input type='button' value='18l' onclick="switch_to_dataset('18l');" style='position: fixed; top: 56em; right: 5em;'/>
+	<input type='button' value='19l' onclick="switch_to_dataset('19l');" style='position: fixed; top: 59em; right: 5em;'/>
+	<input type='button' value='20l' onclick="switch_to_dataset('20l');" style='position: fixed; top: 62em; right: 5em;'/>
+	
+        <script>
+            function switch_to_dataset(dataset) {
+                let path;
+                let current_dataset = document.getElementById("dataset").innerText;
+
+                let images = document.getElementsByTagName("img");
+                for (let i = 0; i < images.length; i++) {
+                    path = images[i].src;
+                    images[i].src = path.replace('/' + current_dataset + '/', '/' + dataset + '/');
+                }
+
+                let anchors = document.getElementsByTagName("a");
+                for (let j = 0; j < anchors.length; j++) {
+                    path = anchors[j].getAttribute('data-featherlight');
+                    if (path != null) {
+                        anchors[j].setAttribute('data-featherlight', path.replace('/' + current_dataset + '/', '/' + dataset + '/'));
+                    }
+                }
+
+                document.getElementById("dataset").innerText = dataset;
+            }
+
+        </script>
+        <script>
+
+            function switch_to_c() {
+                let path;
+                let switchedToC;
+
+                let button = document.getElementById("switch");
+                if (button.value === 'Switch to C') {
+                    button.value = 'Switch to Python';
+                    switchedToC = true;
+                } else {
+                    button.value = 'Switch to C';
+                    switchedToC = false;
+                }
+
+                // switch images!
+                let images = document.getElementsByTagName("img");
+                for (let i = 0; i < images.length; i++) {
+                    path = images[i].src;
+//                    // AREA IMAGES
+//                    if (switchedToC === true && path.includes('py_area.png')) {
+//                        images[i].src = path.replace('py_area.png', 'c_area.png');
+//                    }
+//                    else if (switchedToC === false && path.includes('c_area.png')) {
+//                        images[i].src = path.replace('c_area.png', 'py_area.png');
+//                    }
+                    // CLASSIFICATION IMAGES
+                    if (switchedToC === true && path.includes('py_classification.png')) {
+                        images[i].src = path.replace('py_classification.png', 'c_classification.png');
+                    }
+                    else if (switchedToC === false && path.includes('c_classification.png')) {
+                        images[i].src = path.replace('c_classification.png', 'py_classification.png');
+                    }
+                }
+
+                // switch anchors!
+                let anchors = document.getElementsByTagName("a");
+                for (let j = 0; j < anchors.length; j++) {
+                    path = anchors[j].getAttribute('data-featherlight');
+                    if (path == null) {
+                        continue;
+                    }
+//                    AREA PLOT IS ALWAYY THE SAME
+//                    // AREA
+//                    if (switchedToC === true != null && path.includes('py_area.png')) {
+//                        images[i].src = path.replace('py_area.png', 'c_area.png');
+//                        path = path.replace('py_area.png', 'c_area.png');
+//                        anchors[j].setAttribute('data-featherlight', path);
+//                    }
+//                    else if (switchedToC === false && path.includes('individual/c/')) {
+//                        images[i].src = path.replace('c_area.png', 'py_area.png');
+//                        path = path.replace('c_area.png', 'py_area.png');
+//                        anchors[j].setAttribute('data-featherlight', path);
+//                    }
+                    // CLASSIFICATION
+                     if (switchedToC === true != null && path.includes('py_classification.png')) {
+                        path = path.replace('py_classification.png', 'c_classification.png');
+                        anchors[j].setAttribute('data-featherlight', path);
+                    }
+                    else if (switchedToC === false && path.includes('c_classification.png')) {
+                        path = path.replace('c_classification.png', 'py_classification.png');
+                        anchors[j].setAttribute('data-featherlight', path);
+
+                    }
+                }
+            }
+        </script>
+
+        <div class="tab-content">
+            <table>
+                <tr>
+                </tr>
+            </table>
+            <div id='blackhole-attack' class='tab-pane fade in active'>
+<h3> blackhole-attack </h3>
+<table>
+<thead>
+<strong style='position: fixed; top: 1em; right: 5em;'>Current Data Set:</strong>
+<strong id='dataset' style='position: fixed; top: 3em; right: 5em;'>1l</strong>
+<a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/results/udp_flow_graph.png?no_cache=243878164'>  
+<img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/results/udp_flow_graph.png?no_cache=243878164' style='position: fixed; top: 5em; left: 0; border: 3px solid grey; width: 340px'>
+</a>
+<a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/results/udp_flow_graph.png?no_cache=243878164'>  
+<img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/results/udp_flow_graph.png?no_cache=243878164' style='position: fixed; top: 30em; left: 0; border: 3px solid grey; width: 340px'>
+</a>
+<a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/results/udp_flow_graph.png?no_cache=243878164'>  
+<img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/results/udp_flow_graph.png?no_cache=243878164' style='position: fixed; top: 55em; left: 0; border: 3px solid grey; width: 340px'>
+</a>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:00</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/0_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/0_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:00</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/0_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/0_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:00</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/0_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/0_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/0_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/0_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/0_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/0_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/0_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/0_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:01</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/1_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/1_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:01</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/1_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/1_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:01</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/1_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/1_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/1_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/1_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/1_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/1_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/1_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/1_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:02</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/2_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/2_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:02</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/2_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/2_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:02</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/2_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/2_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/2_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/2_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/2_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/2_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/2_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/2_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:03</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/3_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/3_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:03</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/3_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/3_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:03</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/3_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/3_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/3_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/3_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/3_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/3_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/3_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/3_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:04</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/4_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/4_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:04</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/4_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/4_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:04</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/4_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/4_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/4_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/4_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/4_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/4_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/4_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/4_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:05</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/5_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/5_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:05</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/5_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/5_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:05</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/5_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/5_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/5_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/5_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/5_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/5_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/5_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/5_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:06</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/6_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/6_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:06</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/6_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/6_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:06</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/6_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/6_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/6_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/6_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/6_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/6_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/6_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/6_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:07</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/7_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/7_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:07</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/7_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/7_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:07</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/7_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/7_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/7_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/7_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/7_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/7_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/7_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/7_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:08</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/8_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/8_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:08</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/8_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/8_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:08</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/8_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/8_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/8_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/8_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/8_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/8_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/8_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/8_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:09</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/9_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/9_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:09</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/9_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/9_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:09</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/9_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/9_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/9_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/9_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/9_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/9_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/9_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/9_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:0a</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/a_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/a_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:0a</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/a_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/a_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:0a</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/a_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/a_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/a_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/a_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/a_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/a_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/a_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/a_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:0b</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/b_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/b_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:0b</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/b_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/b_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:0b</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/b_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/b_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/b_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/b_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/b_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/b_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/b_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/b_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:0c</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/c_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/c_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:0c</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/c_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/c_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:0c</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/c_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/c_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/c_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/c_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/c_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/c_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/c_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/c_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:0d</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/d_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/d_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:0d</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/d_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/d_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:0d</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/d_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/d_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/d_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/d_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/d_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/d_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/d_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/d_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:0e</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/e_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/e_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:0e</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/e_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/e_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:0e</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/e_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/e_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/e_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/e_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/e_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/e_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/e_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/e_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:0f</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/f_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/f_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:0f</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/f_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/f_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:0f</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/f_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/f_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/f_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/f_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/f_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/without-malicious/data/individual/f_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/f_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/blackhole-attack/with-malicious/data/individual/f_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+</thead>
+</table>
+
+</div>
+
+<div id='hello-flood-attack' class='tab-pane fade'>
+<h3> hello-flood-attack </h3>
+<table>
+<thead>
+<strong style='position: fixed; top: 1em; right: 5em;'>Current Data Set:</strong>
+<strong id='dataset' style='position: fixed; top: 3em; right: 5em;'>1l</strong>
+<a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/results/udp_flow_graph.png?no_cache=243878164'>  
+<img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/results/udp_flow_graph.png?no_cache=243878164' style='position: fixed; top: 5em; left: 0; border: 3px solid grey; width: 340px'>
+</a>
+<a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/results/udp_flow_graph.png?no_cache=243878164'>  
+<img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/results/udp_flow_graph.png?no_cache=243878164' style='position: fixed; top: 30em; left: 0; border: 3px solid grey; width: 340px'>
+</a>
+<a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/results/udp_flow_graph.png?no_cache=243878164'>  
+<img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/results/udp_flow_graph.png?no_cache=243878164' style='position: fixed; top: 55em; left: 0; border: 3px solid grey; width: 340px'>
+</a>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:00</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/0_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/0_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:00</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/0_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/0_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:00</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/0_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/0_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/0_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/0_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/0_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/0_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/0_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/0_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:01</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/1_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/1_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:01</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/1_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/1_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:01</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/1_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/1_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/1_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/1_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/1_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/1_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/1_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/1_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:02</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/2_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/2_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:02</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/2_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/2_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:02</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/2_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/2_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/2_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/2_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/2_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/2_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/2_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/2_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:03</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/3_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/3_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:03</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/3_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/3_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:03</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/3_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/3_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/3_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/3_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/3_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/3_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/3_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/3_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:04</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/4_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/4_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:04</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/4_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/4_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:04</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/4_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/4_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/4_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/4_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/4_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/4_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/4_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/4_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:05</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/5_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/5_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:05</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/5_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/5_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:05</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/5_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/5_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/5_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/5_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/5_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/5_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/5_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/5_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:06</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/6_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/6_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:06</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/6_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/6_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:06</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/6_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/6_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/6_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/6_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/6_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/6_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/6_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/6_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:07</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/7_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/7_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:07</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/7_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/7_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:07</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/7_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/7_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/7_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/7_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/7_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/7_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/7_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/7_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:08</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/8_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/8_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:08</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/8_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/8_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:08</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/8_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/8_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/8_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/8_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/8_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/8_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/8_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/8_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:09</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/9_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/9_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:09</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/9_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/9_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:09</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/9_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/9_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/9_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/9_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/9_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/9_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/9_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/9_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:0a</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/a_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/a_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:0a</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/a_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/a_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:0a</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/a_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/a_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/a_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/a_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/a_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/a_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/a_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/a_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:0b</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/b_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/b_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:0b</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/b_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/b_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:0b</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/b_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/b_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/b_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/b_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/b_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/b_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/b_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/b_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:0c</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/c_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/c_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:0c</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/c_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/c_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:0c</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/c_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/c_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/c_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/c_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/c_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/c_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/c_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/c_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:0d</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/d_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/d_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:0d</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/d_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/d_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:0d</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/d_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/d_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/d_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/d_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/d_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/d_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/d_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/d_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:0e</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/e_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/e_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:0e</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/e_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/e_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:0e</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/e_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/e_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/e_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/e_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/e_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/e_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/e_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/e_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:0f</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/f_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/f_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:0f</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/f_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/f_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:0f</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/f_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/f_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/f_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/f_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/f_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/without-malicious/data/individual/f_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/f_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/hello-flood-attack/with-malicious/data/individual/f_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+</thead>
+</table>
+
+</div>
+
+<div id='version-number-attack' class='tab-pane fade'>
+<h3> version-number-attack </h3>
+<table>
+<thead>
+<strong style='position: fixed; top: 1em; right: 5em;'>Current Data Set:</strong>
+<strong id='dataset' style='position: fixed; top: 3em; right: 5em;'>1l</strong>
+<a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/results/udp_flow_graph.png?no_cache=243878164'>  
+<img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/results/udp_flow_graph.png?no_cache=243878164' style='position: fixed; top: 5em; left: 0; border: 3px solid grey; width: 340px'>
+</a>
+<a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/results/udp_flow_graph.png?no_cache=243878164'>  
+<img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/results/udp_flow_graph.png?no_cache=243878164' style='position: fixed; top: 30em; left: 0; border: 3px solid grey; width: 340px'>
+</a>
+<a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/results/udp_flow_graph.png?no_cache=243878164'>  
+<img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/results/udp_flow_graph.png?no_cache=243878164' style='position: fixed; top: 55em; left: 0; border: 3px solid grey; width: 340px'>
+</a>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:00</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/0_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/0_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:00</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/0_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/0_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:00</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/0_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/0_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/0_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/0_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/0_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/0_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/0_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/0_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:01</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/1_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/1_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:01</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/1_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/1_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:01</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/1_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/1_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/1_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/1_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/1_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/1_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/1_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/1_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:02</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/2_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/2_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:02</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/2_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/2_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:02</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/2_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/2_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/2_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/2_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/2_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/2_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/2_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/2_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:03</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/3_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/3_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:03</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/3_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/3_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:03</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/3_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/3_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/3_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/3_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/3_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/3_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/3_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/3_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:04</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/4_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/4_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:04</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/4_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/4_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:04</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/4_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/4_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/4_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/4_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/4_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/4_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/4_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/4_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:05</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/5_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/5_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:05</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/5_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/5_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:05</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/5_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/5_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/5_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/5_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/5_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/5_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/5_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/5_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:06</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/6_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/6_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:06</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/6_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/6_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:06</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/6_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/6_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/6_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/6_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/6_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/6_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/6_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/6_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:07</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/7_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/7_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:07</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/7_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/7_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:07</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/7_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/7_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/7_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/7_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/7_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/7_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/7_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/7_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:08</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/8_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/8_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:08</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/8_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/8_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:08</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/8_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/8_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/8_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/8_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/8_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/8_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/8_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/8_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:09</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/9_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/9_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:09</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/9_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/9_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:09</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/9_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/9_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/9_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/9_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/9_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/9_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/9_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/9_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:0a</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/a_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/a_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:0a</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/a_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/a_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:0a</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/a_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/a_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/a_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/a_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/a_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/a_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/a_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/a_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:0b</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/b_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/b_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:0b</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/b_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/b_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:0b</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/b_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/b_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/b_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/b_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/b_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/b_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/b_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/b_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:0c</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/c_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/c_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:0c</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/c_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/c_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:0c</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/c_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/c_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/c_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/c_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/c_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/c_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/c_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/c_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:0d</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/d_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/d_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:0d</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/d_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/d_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:0d</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/d_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/d_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/d_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/d_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/d_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/d_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/d_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/d_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:0e</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/e_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/e_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:0e</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/e_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/e_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:0e</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/e_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/e_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/e_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/e_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/e_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/e_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/e_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/e_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+<tr>
+       <td><h4>Control set: c1:0c:00:00:00:00:00:0f</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/f_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/f_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+       <td><h4>Training set: c1:0c:00:00:00:00:00:0f</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/f_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/f_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey' hspace='10'> </a>
+       </td>
+       <td><h4>Test set: c1:0c:00:00:00:00:00:0f</h4>       <a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/f_area.png?no_cache=243878164'>  
+       <img height='300' src='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/f_area.png?no_cache=243878164' class='img-fluid' style='border: 3px solid grey'> </a>
+       </td>
+</tr>
+<tr>
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/f_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/control-set-clean/without-malicious/data/individual/f_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid grey'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/f_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/without-malicious/data/individual/f_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid green' hspace='10'>
+      </a></td>
+
+      <td><a href='#' data-featherlight='~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/f_py_classification.png?no_cache=243878164'>  
+          <img height='153' src=~/../../../../RPL-Attacks-Data/1l/version-number-attack/with-malicious/data/individual/f_py_classification.png?no_cache=243878164 class='img-fluid' style='border: 3px solid red'>
+      </a></td>
+</tr>
+</thead>
+</table>
+
+</div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

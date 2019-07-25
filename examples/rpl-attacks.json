@@ -1,0 +1,46 @@
+{
+  "BASE": {
+    "simulation": {
+      "target": "z1",
+      "duration": 120,
+      "number-motes": 7,
+      "wsn-generation-algorithm": "quadrants"
+    }
+  },
+  "version-number-attack": {
+    "custom_makefile" : "motes/custom_makefile/Makefile",
+    "additional_files": [
+      // {"src": "motes/project-conf.h", "dst": "motes/project-conf.h"},
+      {"src": "motes/detector-rdc.c", "dst": "motes/detector-rdc.c"},
+      {"src": "motes/helper_funcs.h", "dst": "motes/helper_funcs.h"},
+      {"src": "motes/helper_funcs.c", "dst": "motes/helper_funcs.c"},
+      {"src": "motes/anomaly-detection.h", "dst": "motes/anomaly-detection.h"},
+      {"src": "motes/anomaly-detection.c", "dst": "motes/anomaly-detection.c"},
+      {"src": "motes/package-parser.h", "dst": "motes/package-parser.h"},
+      {"src": "motes/package-parser.c", "dst": "motes/package-parser.c"},
+      {"src": "motes/feature-extraction.h", "dst": "motes/feature-extraction.h"},
+      {"src": "motes/feature-extraction.c", "dst": "motes/feature-extraction.c"},
+      {"src": "motes/spline-detector.h", "dst": "motes/spline-detector.h"},
+      {"src": "motes/spline-detector.c", "dst": "motes/spline-detector.c"},
+      {"src": "motes/anomaly-detection.h", "dst": "motes/anomaly-detection.h"},
+      {"src": "motes/anomaly-detection.c", "dst": "motes/anomaly-detection.c"},
+      {"src": "motes/make-spline-data.py", "dst": "motes/make-spline-data.py"}
+    ],
+    "loglevel" : "debug",
+    "simulation": {
+      "title": "Blackhole attack",
+      "root": "echo",
+      "sensor": "echo"
+    },
+    "malicious": {
+      "building-blocks": ["version-number"]
+    },
+    "num_malicious" : 1,
+    "positions" : {
+      "malicious": {
+        "x" : 10,
+        "y" : 10
+      }
+    }
+  }
+}
