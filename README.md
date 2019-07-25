@@ -22,6 +22,7 @@ parent directory (e.g. home directory)
 |--RPL-Attacks-Data (directory containing simulation data)  
 |  
 |--rpl-attacks (this git repository, contains source code and models)  
+
 If you prefer another structure, you will have to adapt some paths in the code.
 
 ## RPL Attacks data
@@ -35,9 +36,9 @@ Python implementation they will differ significantly.
 The RPL-Attacks-Data git repository contains the data used in the paper.
 
 In order to generate new data:
-1. Generate a new directory in RPL-Attacks-Data `<new dir>` (e.g. 21l).
+1. Generate a new directory in RPL-Attacks-Data `<new dir>` (e.g. my_test).
 2. Generate a network architecture configuration and store it as `<new dir>/<new dir>.json`.  
-    `Note: Example configurations can be found in the existing data sets.`
+    For an example configuration, see `examples/single-test.json`.
 3. Configure the new data set in `create_all.py`. Also ensure the virtual environment and the paths are correct.
 4. Run the create_all script using `python create_all.py`.
 If you encounter problems, ensure you are in the correct python environment.
