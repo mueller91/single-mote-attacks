@@ -1,3 +1,7 @@
+# Welcome to the project 'single-mote-attacks'
+This work has been published at SECRYPT2019. You can find the corresponding article here: http://insticc.org/node/TechnicalProgram/icete/presentationDetails/78360
+
+
 # Installation
 
 1. Download this git repository.  
